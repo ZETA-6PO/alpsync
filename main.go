@@ -22,7 +22,7 @@ func main() {
 	keyFile := "./ssl/server.key"
 
 	// Demarrer le serveur HTTP avec HTTPS
-	log.Fatal(http.ListenAndServeTLS(":8080", certFile, keyFile, router))
+	log.Fatal(http.ListenAndServeTLS(":443", certFile, keyFile, router))
 	// Demarrer le serveur avec HTTP
 	//log.Fatal(http.ListenAndServe(":8080", router))
 
