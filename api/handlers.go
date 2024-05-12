@@ -1,11 +1,15 @@
 package api
 
 import (
+	"alpsync-api/models"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"time"
+
+	"github.com/kamva/mgm/v3"
 )
 
 func statusHandler(w http.ResponseWriter, r *http.Request) {
@@ -36,8 +40,17 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
+	//creer une entree dans la base de donne
+	dbentry := models.NewASFile(handler.Filename, time.Now().Format(time.UnixDate))
+	coll := mgm.CollectionByName("files")
+	err = coll.Create(dbentry)
+	if err != nil {
+		http.Error(w, "Failed to create entry in db", http.StatusInternalServerError)
+	}
+	file_path := "./data/" + dbentry.ID.Hex() + "_" + handler.Filename
+
 	// Crée un fichier local pour stocker le fichier téléchargé
-	f, err := os.OpenFile("./data/"+handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
+	f, err := os.OpenFile(file_path, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		http.Error(w, "Failed to create file", http.StatusInternalServerError)
 		return

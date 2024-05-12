@@ -4,11 +4,19 @@ import (
 	"alpsync-api/api"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/kamva/mgm/v3"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
+	// Se connecter a la BDD
+	err := mgm.SetDefaultConfig(nil, "production", options.Client().ApplyURI(os.Getenv("ALPSYNC_MONGO_URL")))
+	if err != nil {
+		log.Fatal("[alpsync-api] Cannot connect to the database. ", err.Error())
+	}
 
 	fmt.Println("[alpsync-api] Server running...")
 
