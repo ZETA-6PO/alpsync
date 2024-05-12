@@ -8,5 +8,6 @@ func InitRoutes(router *mux.Router) {
 
 	apiRouter := router.PathPrefix("/api").Subrouter()
 	apiRouter.HandleFunc("/status", statusHandler).Methods("GET")
+	apiRouter.HandleFunc("/upload", uploadFileHandler).Methods("POST")
 
 }
