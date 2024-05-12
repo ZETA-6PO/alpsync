@@ -13,6 +13,7 @@ import (
 
 func main() {
 	// Se connecter a la BDD
+	log.Println("[alpsync-api] Connecting to MongoDB ", os.Getenv(ALPSYNC_MONGO_URL))
 	err := mgm.SetDefaultConfig(nil, "production", options.Client().ApplyURI(os.Getenv("ALPSYNC_MONGO_URL")))
 	if err != nil {
 		log.Fatal("[alpsync-api] Cannot connect to the database. ", err.Error())
