@@ -17,7 +17,8 @@ func main() {
 	api.InitRoutes(router)
 
 	// Servir les fichier de facon statique
-	router.Handle("/", http.FileServer(http.Dir("./static/")))
+	fs := http.FileServer(http.Dir("./static/"))
+	router.PathPrefix("/").Handler(fs)
 
 	certFile := "./ssl/server.crt"
 	keyFile := "./ssl/server.key"
