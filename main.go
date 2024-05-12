@@ -15,8 +15,9 @@ func main() {
 	// Definir les routes
 	router := mux.NewRouter()
 	api.InitRoutes(router)
+
 	// Servir les fichier de facon statique
-	http.Handle("/", http.FileServer(http.Dir("./static/")))
+	router.Handle("/", http.FileServer(http.Dir("./static/")))
 
 	certFile := "./ssl/server.crt"
 	keyFile := "./ssl/server.key"
