@@ -45,6 +45,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	coll := mgm.CollectionByName("files")
 	err = coll.Create(dbentry)
 	if err != nil {
+		fmt.Println("Error db : ", err.Error())
 		http.Error(w, "Failed to create entry in db", http.StatusInternalServerError)
 	}
 	file_path := "./data/" + dbentry.ID.Hex() + "_" + handler.Filename
