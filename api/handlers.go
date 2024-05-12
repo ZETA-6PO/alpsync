@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
+func statusHandler(w http.ResponseWriter, r *http.Request) {
 	response := map[string]string{"message": "Service is available."}
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
@@ -22,8 +22,7 @@ func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
-	// ParseMultipartForm analyse une requête avec un corps multipart et stocke les résultats dans r.MultipartForm.
-	err := r.ParseMultipartForm(50 << 20) // 10 Mo de taille maximale de fichier
+	err := r.ParseMultipartForm(50 << 20)
 	if err != nil {
 		http.Error(w, "Failed to parse multipart form", http.StatusBadRequest)
 		return
