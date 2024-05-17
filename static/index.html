@@ -1,46 +1,58 @@
-<html lang="fr"><head>
-    <meta charset="UTF-8">
-    <title>AlpSync - coming soon</title>
-    <link rel="stylesheet" href="styles.css">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>File Upload</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
-<body>
-    <header>
-        <div id="logo-container">
-            <img src="logo.png" alt="Logo" id="logo">
-            <h1>AlpSync</h1>
+
+<body class="bg-028090 text-02c39a" style="background-image: url(https://picsum.photos/1920/1080); background-size: cover;">
+  <div class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <img src="./logo.png" alt="Company logo" class="w-12 h-12 mr-4" />
+          <h1 class="text-2xl font-bold">AlpSync</h1>
         </div>
-    </header>
-    <section id="content">
-        <p>
-        My project aims to create an innovative web platform, providing an eco-friendly alternative to traditional file-sharing services such as Dropbox or WeTransfer. The platform will allow users to share files while receiving an estimation of the carbon cost associated with their sharing. This unique feature will raise awareness among users about the environmental footprint of their digital actions and encourage more sustainable practices.
-        </p>
-        <p>
-        To give you a more precise idea: the platform will consist of a single page on which all the main functions will be available. You'll then be able to upload one or more files for a certain period of time, ranging from 1 hour to several weeks. Before uploading, the platform will give you an estimate of the carbon cost of the operation, based on calculations and reference data. Finally, once you've uploaded your files, you'll be given a link to share with others so that they can download them. 
-        </p>
-        <p>On the technical side, the application will be equipped with a simple API and a database to ensure its smooth operation. The database will store user data securely and efficiently, ensuring a seamless user experience while adhering to privacy regulations. Additionally, the platform will employ encryption protocols to safeguard user data and ensure secure file transmission, further enhancing user confidence in the platform's reliability and security.</p>
-        <p>
-        By integrating environmental metrics into the file-sharing process, my project aims to promote the reduction of carbon emissions associated with digital activities, thereby contributing to the fight against climate change and the preservation of our planet for future generations.
-        </p>
-        <p>
-        I have decided to select the Apache 2.0 license for my project to ensure flexibility in sharing and utilizing the work, all while retaining the copyright. Specifically, I am opting for the Apache 2.0 License. This license grants others the ability to share and adapt my work for non-commercial purposes, with the condition that they provide appropriate credit and distribute any derivative works under the same license. By employing the Apache 2.0 license, my goal is to foster collaboration, stimulate creativity, and promote the dissemination of eco-friendly solutions, all the while upholding the integrity of my work.
-        </p>
-	<p>STUDENT ID : 35214224</p>
-    </section>
-    <footer>
-      <p>© Copyright 2024 AlpSync.</p>
-      Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+        <button class="bg-02c39a hover:bg-028090 text-white font-bold py-2 px-4 rounded-md" type="button">Upload</button>
+      </div>
+      <hr class="my-4" />
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2" for="file">File</label>
+          <input class="block w-full px-4 py-2 text-sm border rounded-md focus:border-blue-400 focus:ring-blue-300" type="file" id="file" name="file">
+        </div>
+        <button class="bg-02c39a hover:bg-028090 text-white font-bold py-2 px-4 rounded-md" type="submit">Upload</button>
+      </form>
+    </div>
+  </div>
 
-       http://www.apache.org/licenses/LICENSE-2.0
+  <script>
+    const form = document.querySelector('form');
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-    </footer>
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
 
+      const file = document.querySelector('input[type=file]').files[0];
 
+      const formData = new FormData();
+      formData.append('file', file);
 
-</body></html>
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(`File uploaded successfully. ID: ${data.id}`);
+        })
+        .catch(error => {
+          alert('Error uploading file.');
+        });
+    });
+  </script>
+</body>
+
+</html>
