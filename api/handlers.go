@@ -1,17 +1,14 @@
 package api
 
 import (
-	"alpsync-api/models"
+	"alpsync-api/db"
+	"alpsync-api/utils"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"os"
-	"time"
-
-	"github.com/kamva/mgm/v3"
 )
 
+// Handle get status request
 func statusHandler(w http.ResponseWriter, r *http.Request) {
 	response := map[string]string{"message": "Service is available."}
 	jsonResponse, err := json.Marshal(response)
@@ -25,6 +22,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResponse)
 }
 
+// Handle file upload request
 func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(50 << 20)
 	if err != nil {
@@ -32,7 +30,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Récupère le fichier du champ de formulaire "file"
+	// Get the file from the content-type multipart request
 	file, handler, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, "Failed to get file from form", http.StatusBadRequest)
@@ -40,30 +38,19 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	//creer une entree dans la base de donne
-	dbentry := models.NewASFile(handler.Filename, time.Now().Format(time.UnixDate))
-	coll := mgm.CollectionByName("files")
-	err = coll.Create(dbentry)
+	// create a db entry for that file
+	hexId, err := db.AddFileEntry(handler.Filename, handler.Header.Get("expiresAt"))
 	if err != nil {
 		fmt.Println("Error db : ", err.Error())
 		http.Error(w, "Failed to create entry in db", http.StatusInternalServerError)
 	}
-	file_path := "./data/" + dbentry.ID.Hex() + "_" + handler.Filename
 
-	// Crée un fichier local pour stocker le fichier téléchargé
-	f, err := os.OpenFile(file_path, os.O_WRONLY|os.O_CREATE, 0666)
+	// create an file on disk
+	file_path := "./data/" + hexId + "_" + handler.Filename
+	err = utils.CreateFile(file, file_path)
 	if err != nil {
-		http.Error(w, "Failed to create file", http.StatusInternalServerError)
-		return
-	}
-	defer f.Close()
-
-	// Copie le contenu du fichier téléchargé dans le fichier local
-	_, err = io.Copy(f, file)
-	if err != nil {
-		http.Error(w, "Failed to copy file", http.StatusInternalServerError)
-		return
+		http.Error(w, "Failed to write the file on disk.", http.StatusInternalServerError)
 	}
 
-	fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename)
+	fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename) // must be remove
 }

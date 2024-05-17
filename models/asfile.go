@@ -7,12 +7,12 @@ import (
 type ASFile struct {
 	mgm.DefaultModel `bson:",inline"`
 	Name             string `json:"name" bson:"name"`
-	ExpireAt         string `json:"expireAt" bson:"expireAt"`
+	ExpiresAt        string `json:"expireAt" bson:"expireAt"`
 }
 
-func NewASFile(name string, expireAt string) *ASFile {
+func NewASFile(name string, expiresAt string) *ASFile {
 	return &ASFile{
-		Name:     name,
-		ExpireAt: expireAt,
+		Name:      name,
+		ExpiresAt: expiresAt,
 	}
 }
