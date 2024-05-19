@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 )
 
 // Handle get status request
@@ -52,5 +53,13 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to write the file on disk.", http.StatusInternalServerError)
 	}
 
+	baseURL := "https://alpsync.pro/uploadOk"
+
+	// Création d'un objet url.Values pour stocker les paramètres de requête
+	params := url.Values{}
+	params.Set("fileid", hexId)
+	params.Set("filename", handler.Filename)
+	params.Set("footprint", "2.5g")
+	http.Redirect(w, r, baseURL, http.StatusSeeOther)
 	fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename) // must be remove
 }

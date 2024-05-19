@@ -19,34 +19,11 @@
         <a href="index.html" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 ml-4">Upload another file</a>
       </div>
       <hr class="my-4" />
-      <div>Your code is : code and this file carbon footprint is .</div>
+      <div>Your file {{.FileName}} has been successfully upload.</div>
+      <div>Please note your file id : {{.FileId}} in order to retrieve it.</div>
+      <div>Your carbon footprint is {{.FootPrint}}g for 14 days of storage.</div>
     </div>
   </div>
-
-  <script>
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const file = document.querySelector('input[type=file]').files[0];
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      fetch('/upload', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(data => {
-          alert(`File uploaded successfully. ID: ${data.id}`);
-        })
-        .catch(error => {
-          alert('Error uploading file.');
-        });
-    });
-  </script>
-</body>
+  </body>
 
 </html>
