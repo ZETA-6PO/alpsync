@@ -37,30 +37,7 @@
     </div>
   </div>
 
-  <script>
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const file = document.querySelector('input[type=file]').files[0];
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      fetch('/upload', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(data => {
-          alert(`File uploaded successfully. ID: ${data.id}`);
-        })
-        .catch(error => {
-          alert('Error uploading file.');
-        });
-    });
-  </script>
+  
 </body>
 
 </html>
