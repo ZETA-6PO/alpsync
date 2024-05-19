@@ -24,6 +24,7 @@ func uploadOk(w http.ResponseWriter, r *http.Request) {
 	i, err := fmt.Sscanf(footprint, "%f", &footPrintFloat)
 	if i != 1 || err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	// Create a Data object with retrieved values
