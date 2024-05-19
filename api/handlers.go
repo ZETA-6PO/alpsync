@@ -61,5 +61,4 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	params.Set("filename", handler.Filename)
 	params.Set("footprint", "2.5g")
 	http.Redirect(w, r, baseURL, http.StatusSeeOther)
-	fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename) // must be remove
 }

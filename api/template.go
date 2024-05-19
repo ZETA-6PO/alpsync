@@ -33,6 +33,8 @@ func uploadOk(w http.ResponseWriter, r *http.Request) {
 		FootPrint: footPrintFloat,
 	}
 
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
 	// Load the template file
 	tmpl, err := template.ParseFiles("./template/uploadOk.html")
 	if err != nil {
