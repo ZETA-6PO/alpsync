@@ -60,5 +60,5 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	params.Set("fileid", hexId)
 	params.Set("filename", handler.Filename)
 	params.Set("footprint", "2.5g")
-	http.Redirect(w, r, baseURL, http.StatusSeeOther)
+	http.Redirect(w, r, baseURL+"?"+params.Encode(), http.StatusSeeOther)
 }
