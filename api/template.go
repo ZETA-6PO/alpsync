@@ -7,10 +7,22 @@ import (
 )
 
 // Structure pour stocker les données
-type Data struct {
+type DataUploadOk struct {
 	FileName  string
 	FileId    string
 	FootPrint float64
+}
+
+type DataUploadErr struct {
+	Message string
+}
+
+type DataDownloadErr struct {
+	Message string
+}
+
+type DataDownloadOk struct {
+	FileName string
 }
 
 func uploadOk(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +40,7 @@ func uploadOk(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create a Data object with retrieved values
-	data := Data{
+	data := DataUploadOk{
 		FileId:    fileID,
 		FileName:  filename,
 		FootPrint: footPrintFloat,
@@ -38,6 +50,79 @@ func uploadOk(w http.ResponseWriter, r *http.Request) {
 
 	// Load the template file
 	tmpl, err := template.ParseFiles("./template/uploadOk.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Execute the template using the data
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func uploadErr(w http.ResponseWriter, r *http.Request) {
+	// Retrieve values from the URL query string
+	message := r.URL.Query().Get("message")
+
+	data := DataUploadErr{
+		Message: message,
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	// Load the template file
+	tmpl, err := template.ParseFiles("./template/uploadErr.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Execute the template using the data
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func downloadOk(w http.ResponseWriter, r *http.Request) {
+	// Retrieve values from the URL query string
+	filename := r.URL.Query().Get("filename")
+
+	data := DataDownloadOk{
+		FileName: filename,
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	// Load the template file
+	tmpl, err := template.ParseFiles("./template/downloadOk.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Execute the template using the data
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func downloadErr(w http.ResponseWriter, r *http.Request, message string) {
+
+	data := DataDownloadErr{
+		Message: message,
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	// Load the template file
+	tmpl, err := template.ParseFiles("./template/downloadErr.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>AlpSync - Oooops</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body class="bg-028090 text-02c39a" style="background-image: url(https://picsum.photos/1920/1080); background-size: cover;">
+  <div class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <img src="./logo.png" alt="Company logo" class="w-12 h-12" />
+          <h1 class="text-2xl font-bold">AlpSync</h1>
+        </div>
+        <a href="index.html" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 ml-4">Upload another file</a>
+      </div>
+      <hr class="my-4" />
+      <div>We are very sorry, but an error prevented us from uploading your file.</div>
+      <div>Please contact the website admin.</div>
+      <div>Error message : {{.Message}}</div>
+    </div>
+  </div>
+  </body>
+
+</html>
