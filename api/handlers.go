@@ -27,7 +27,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(50 << 20)
 	if err != nil {
-		http.Error(w, "Failed to parse multipart form", http.StatusBadRequest)
+		uploadErr(w, err.Error())
 		return
 	}
 
@@ -94,4 +94,6 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("filename is %s\n", filename)
 
 	http.ServeContent(w, r, filename, fileStat.ModTime(), file)
+
+	downloadOk(w, filename)
 }
