@@ -65,24 +65,17 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func downloadHandler(w http.ResponseWriter, r *http.Request) {
-	// Récupérer le chemin de l'URL
 	urlPath := r.URL.Path
 
-	// Diviser le chemin de l'URL en parties en utilisant "/"
 	parts := strings.Split(urlPath, "/")
 
-	// Vérifier si le chemin a la bonne forme
 	if len(parts) != 3 || parts[1] != "f" {
 		http.Error(w, "URL invalide", http.StatusBadRequest)
 		return
 	}
 
-	// Récupérer le code depuis la dernière partie de l'URL
 	code := parts[2]
 
-	// Afficher le code récupéré
-	fmt.Fprintf(w, "Code récupéré : %s", code)
-	//Verifier si le fichier existe dans la bdd
 	filename, err := db.GetFileEntry(code)
 
 	if err != nil {
@@ -97,12 +90,9 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Set le header Content-Type pour indiquer le type de fichier
 	w.Header().Set("Content-Type", "application/octet-stream")
 
-	// Set le header Content-Disposition pour indiquer le nom du fichier lors du téléchargement
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filename))
 
-	// Copier le contenu du fichier dans la réponse HTTP
 	http.ServeContent(w, r, filename, fileStat.ModTime(), file)
 }
