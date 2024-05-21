@@ -85,6 +85,8 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	fileStat, file, err := utils.ReadFile("./data/" + code)
 
+	defer file.Close()
+
 	if err != nil {
 		http.Error(w, "File cannot be opened on the server.", http.StatusInternalServerError)
 		return

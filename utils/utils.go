@@ -29,7 +29,6 @@ func ReadFile(path string) (os.FileInfo, *os.File, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	defer file.Close()
 
 	fileStat, err := file.Stat()
 	if err != nil {
