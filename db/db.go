@@ -18,3 +18,15 @@ func AddFileEntry(name string, expireAt string) (string, error) {
 
 	return dbentry.ID.Hex(), nil
 }
+
+// Retrieve the file name of the provided file id.
+func GetFileEntry(id string) (string, error) {
+	coll := mgm.CollectionByName("files")
+	dbentry := &models.ASFile{}
+	err := coll.FindByID(id, dbentry)
+	if err != nil {
+		return "", err
+	}
+	return dbentry.Name, nil
+
+}

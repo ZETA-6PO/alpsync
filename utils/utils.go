@@ -23,3 +23,18 @@ func CreateFile(file multipart.File, file_path string) error {
 	return nil
 
 }
+
+func ReadFile(path string) (os.FileInfo, *os.File, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer file.Close()
+
+	fileStat, err := file.Stat()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return fileStat, file, nil
+}

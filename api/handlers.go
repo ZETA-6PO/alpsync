@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 // Handle get status request
@@ -47,7 +48,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// create an file on disk
-	file_path := "./data/" + hexId + "_" + handler.Filename
+	file_path := "./data/" + hexId
 	err = utils.CreateFile(file, file_path)
 	if err != nil {
 		http.Error(w, "Failed to write the file on disk.", http.StatusInternalServerError)
@@ -57,8 +58,35 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Création d'un objet url.Values pour stocker les paramètres de requête
 	params := url.Values{}
-	params.Set("fileid", hexId)
+	params.Set("fileid", "https://alpsync.pro/t-"+hexId)
 	params.Set("filename", handler.Filename)
 	params.Set("footprint", "2.5g")
 	http.Redirect(w, r, baseURL+"?"+params.Encode(), http.StatusSeeOther)
+}
+
+func downloadHandler(w http.ResponseWriter, r *http.Request) {
+	// Recuperer le code de l'URL
+	parts := strings.Split(r.URL.Path, "/")
+	if len(parts) != 3 || parts[1] != "f-" {
+		http.NotFound(w, r)
+		return
+	}
+	code := parts[2]
+	//Verifier si le fichier existe dans la bdd
+	filename, err := db.GetFileEntry(code)
+
+	if err != nil {
+		http.Error(w, "Unknown file id.", http.StatusBadRequest)
+	}
+
+	fileStat, file, err := utils.ReadFile("./data/" + code)
+
+	// Set le header Content-Type pour indiquer le type de fichier
+	w.Header().Set("Content-Type", "application/octet-stream")
+
+	// Set le header Content-Disposition pour indiquer le nom du fichier lors du téléchargement
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filename))
+
+	// Copier le contenu du fichier dans la réponse HTTP
+	http.ServeContent(w, r, filename, fileStat.ModTime(), file)
 }
