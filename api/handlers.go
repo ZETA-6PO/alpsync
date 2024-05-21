@@ -66,6 +66,8 @@ func downloadPageHandler(w http.ResponseWriter, r *http.Request) {
 
 	if len(parts) != 3 || parts[1] != "f" {
 		downloadErr(w, "bad url format")
+		fmt.Println("")
+		fmt.Println("error")
 		return
 	}
 
@@ -89,16 +91,18 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	parts := strings.Split(urlPath, "/")
 
-	if len(parts) != 4 || parts[2] != "dwl" {
+	if len(parts) != 3 || parts[1] != "dwl" {
+		fmt.Println("error")
 		downloadErr(w, "bad url format")
 		return
 	}
 
-	code := parts[3]
+	code := parts[2]
 
 	filename, err := db.GetFileEntry(code)
 
 	if err != nil {
+		fmt.Println("error")
 		downloadErr(w, err.Error())
 		return
 	}
@@ -111,8 +115,6 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 		downloadErr(w, err.Error())
 		return
 	}
-
-	fmt.Printf("filename is %s\n", filename)
 
 	w.Header().Set("Content-Type", "application/octet-stream")
 
