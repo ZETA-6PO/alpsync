@@ -59,7 +59,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func downloadHandler(w http.ResponseWriter, r *http.Request) {
+func downloadPageHandler(w http.ResponseWriter, r *http.Request) {
 	urlPath := r.URL.Path
 
 	parts := strings.Split(urlPath, "/")
@@ -78,6 +78,31 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Printf("filename is %s\n", filename)
+
+	downloadOk(w, filename)
+
+}
+
+func downloadHandler(w http.ResponseWriter, r *http.Request) {
+	urlPath := r.URL.Path
+
+	parts := strings.Split(urlPath, "/")
+
+	if len(parts) != 4 || parts[2] != "dwl" {
+		downloadErr(w, "bad url format")
+		return
+	}
+
+	code := parts[3]
+
+	filename, err := db.GetFileEntry(code)
+
+	if err != nil {
+		downloadErr(w, err.Error())
+		return
+	}
+
 	fileStat, file, err := utils.ReadFile("./data/" + code)
 
 	defer file.Close()
@@ -88,8 +113,6 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Printf("filename is %s\n", filename)
-
-	downloadOk(w, filename)
 
 	w.Header().Set("Content-Type", "application/octet-stream")
 

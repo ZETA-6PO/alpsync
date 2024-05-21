@@ -19,8 +19,14 @@
         <a href="/index.html" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 ml-4">Upload another file</a>
       </div>
       <hr class="my-4" />
-      <div>Your file {{.FileName}} has been successfully downloaded.</div>
+      <div>Your file {{.FileName}} is ready to be downloaded.</div>
       <div>Thanks for using AlpSync, a greener solution.</div>
+      <a href="/api/dwl/{{.FileId}}" download>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Download {{.FileName}}
+        </button>
+      </a>
+
     </div>
   </div>
   </body>
