@@ -91,13 +91,13 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	parts := strings.Split(urlPath, "/")
 
-	if len(parts) != 3 || parts[1] != "dwl" {
+	if len(parts) != 4 || parts[2] != "dwl" {
 		fmt.Println("error")
 		downloadErr(w, "bad url format")
 		return
 	}
 
-	code := parts[2]
+	code := parts[3]
 
 	filename, err := db.GetFileEntry(code)
 
