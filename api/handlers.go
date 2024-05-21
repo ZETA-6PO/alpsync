@@ -69,6 +69,7 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(r.URL.Path, "/")
 	if len(parts) != 3 || parts[1] != "f-" {
 		http.NotFound(w, r)
+		fmt.Printf("not workin")
 		return
 	}
 	code := parts[2]
