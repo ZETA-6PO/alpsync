@@ -93,7 +93,8 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("filename is %s\n", filename)
 
+	downloadOk(w, filename)
+
 	http.ServeContent(w, r, filename, fileStat.ModTime(), file)
 
-	downloadOk(w, filename)
 }
