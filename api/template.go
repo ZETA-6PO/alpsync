@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -9,7 +10,7 @@ import (
 type DataUploadOk struct {
 	FileName  string
 	FileId    string
-	FootPrint float64
+	FootPrint string
 }
 
 type DataUploadErr struct {
@@ -27,11 +28,13 @@ type DataDownloadOk struct {
 
 func uploadOk(w http.ResponseWriter, fileID string, filename string, footprint float64) {
 
+	footprintStr := fmt.Sprintf("%.2f", footprint)
+
 	// Create a Data object with retrieved values
 	data := DataUploadOk{
 		FileId:    fileID,
 		FileName:  filename,
-		FootPrint: footprint,
+		FootPrint: footprintStr,
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
