@@ -94,5 +94,7 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filename))
 
+	fmt.Printf("filename is %s\n", filename)
+
 	http.ServeContent(w, r, filename, fileStat.ModTime(), file)
 }
