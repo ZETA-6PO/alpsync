@@ -58,7 +58,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Création d'un objet url.Values pour stocker les paramètres de requête
 	params := url.Values{}
-	params.Set("fileid", "https://alpsync.pro/t-"+hexId)
+	params.Set("fileid", "https://alpsync.pro/f-"+hexId)
 	params.Set("filename", handler.Filename)
 	params.Set("footprint", "2.5g")
 	http.Redirect(w, r, baseURL+"?"+params.Encode(), http.StatusSeeOther)
@@ -77,9 +77,15 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Unknown file id.", http.StatusBadRequest)
+		return
 	}
 
 	fileStat, file, err := utils.ReadFile("./data/" + code)
+
+	if err != nil {
+		http.Error(w, "File cannot be opened on the server.", http.StatusInternalServerError)
+		return
+	}
 
 	// Set le header Content-Type pour indiquer le type de fichier
 	w.Header().Set("Content-Type", "application/octet-stream")
