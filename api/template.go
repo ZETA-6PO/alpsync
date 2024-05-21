@@ -25,11 +25,7 @@ type DataDownloadOk struct {
 	FileName string
 }
 
-func uploadOk(w http.ResponseWriter, r *http.Request) {
-	// Retrieve values from the URL query string
-	fileID := r.URL.Query().Get("fileid")
-	filename := r.URL.Query().Get("filename")
-	footprint := r.URL.Query().Get("footprint")
+func uploadOk(w http.ResponseWriter, fileID string, filename string, footprint string) {
 
 	// Convert footprint to float64
 	var footPrintFloat float64
@@ -63,10 +59,7 @@ func uploadOk(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func uploadErr(w http.ResponseWriter, r *http.Request) {
-	// Retrieve values from the URL query string
-	message := r.URL.Query().Get("message")
-
+func uploadErr(w http.ResponseWriter, message string) {
 	data := DataUploadErr{
 		Message: message,
 	}
@@ -88,9 +81,7 @@ func uploadErr(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func downloadOk(w http.ResponseWriter, r *http.Request) {
-	// Retrieve values from the URL query string
-	filename := r.URL.Query().Get("filename")
+func downloadOk(w http.ResponseWriter, filename string) {
 
 	data := DataDownloadOk{
 		FileName: filename,

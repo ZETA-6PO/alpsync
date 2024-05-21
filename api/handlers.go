@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
 	"strings"
 )
 
@@ -35,7 +34,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the file from the content-type multipart request
 	file, handler, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, "Failed to get file from form", http.StatusBadRequest)
+		uploadErr(w, err.Error())
 		return
 	}
 	defer file.Close()
@@ -44,24 +43,20 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	hexId, err := db.AddFileEntry(handler.Filename, handler.Header.Get("expiresAt"))
 	if err != nil {
 		fmt.Println("Error db : ", err.Error())
-		http.Error(w, "Failed to create entry in db", http.StatusInternalServerError)
+		uploadErr(w, err.Error())
+		return
 	}
 
 	// create an file on disk
 	file_path := "./data/" + hexId
 	err = utils.CreateFile(file, file_path)
 	if err != nil {
-		http.Error(w, "Failed to write the file on disk.", http.StatusInternalServerError)
+		uploadErr(w, err.Error())
+		return
 	}
 
-	baseURL := "https://alpsync.pro/uploadOk"
+	uploadOk(w, hexId, handler.Filename, "2.5")
 
-	// Création d'un objet url.Values pour stocker les paramètres de requête
-	params := url.Values{}
-	params.Set("fileid", "https://alpsync.pro/f/"+hexId)
-	params.Set("filename", handler.Filename)
-	params.Set("footprint", "2.5g")
-	http.Redirect(w, r, baseURL+"?"+params.Encode(), http.StatusSeeOther)
 }
 
 func downloadHandler(w http.ResponseWriter, r *http.Request) {
@@ -70,7 +65,7 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	parts := strings.Split(urlPath, "/")
 
 	if len(parts) != 3 || parts[1] != "f" {
-		http.Error(w, "URL invalide", http.StatusBadRequest)
+		downloadErr(w, "bad url format")
 		return
 	}
 
@@ -88,7 +83,7 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	if err != nil {
-		http.Error(w, "File cannot be opened on the server.", http.StatusInternalServerError)
+		downloadErr(w, err.Error())
 		return
 	}
 

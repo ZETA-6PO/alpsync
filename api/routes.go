@@ -10,7 +10,6 @@ func InitRoutes(router *mux.Router) {
 	router.PathPrefix("/f/").HandlerFunc(downloadHandler)
 	fs := http.FileServer(http.Dir("./static/"))
 	router.PathPrefix("/").Handler(fs)
-	router.HandleFunc("/uploadOk", uploadOk)
 	apiRouter := router.PathPrefix("/api").Subrouter()
 	apiRouter.HandleFunc("/status", statusHandler).Methods("GET")
 	apiRouter.HandleFunc("/upload", uploadFileHandler).Methods("POST")
