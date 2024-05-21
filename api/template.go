@@ -113,7 +113,7 @@ func downloadOk(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func downloadErr(w http.ResponseWriter, r *http.Request, message string) {
+func downloadErr(w http.ResponseWriter, message string) {
 
 	data := DataDownloadErr{
 		Message: message,

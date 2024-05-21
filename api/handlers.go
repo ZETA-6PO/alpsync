@@ -79,7 +79,7 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	filename, err := db.GetFileEntry(code)
 
 	if err != nil {
-		downloadErr(w, r, err.Error())
+		downloadErr(w, err.Error())
 		return
 	}
 
