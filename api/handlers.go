@@ -87,13 +87,13 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/octet-stream")
-
-	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filename))
-
 	fmt.Printf("filename is %s\n", filename)
 
 	downloadOk(w, filename)
+
+	w.Header().Set("Content-Type", "application/octet-stream")
+
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filename))
 
 	http.ServeContent(w, r, filename, fileStat.ModTime(), file)
 
