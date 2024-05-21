@@ -23,6 +23,7 @@ type DataDownloadErr struct {
 
 type DataDownloadOk struct {
 	FileName string
+	FileId   string
 }
 
 func uploadOk(w http.ResponseWriter, fileID string, filename string, footprint string) {
@@ -81,10 +82,11 @@ func uploadErr(w http.ResponseWriter, message string) {
 	}
 }
 
-func downloadOk(w http.ResponseWriter, filename string) {
+func downloadOk(w http.ResponseWriter, filename string, fileid string) {
 
 	data := DataDownloadOk{
 		FileName: filename,
+		FileId:   fileid,
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")

@@ -80,7 +80,7 @@ func downloadPageHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("filename is %s\n", filename)
 
-	downloadOk(w, filename)
+	downloadOk(w, filename, code)
 
 }
 
