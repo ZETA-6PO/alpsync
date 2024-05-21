@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -26,21 +25,13 @@ type DataDownloadOk struct {
 	FileId   string
 }
 
-func uploadOk(w http.ResponseWriter, fileID string, filename string, footprint string) {
-
-	// Convert footprint to float64
-	var footPrintFloat float64
-	i, err := fmt.Sscanf(footprint, "%f", &footPrintFloat)
-	if i != 1 || err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+func uploadOk(w http.ResponseWriter, fileID string, filename string, footprint float64) {
 
 	// Create a Data object with retrieved values
 	data := DataUploadOk{
 		FileId:    fileID,
 		FileName:  filename,
-		FootPrint: footPrintFloat,
+		FootPrint: footprint,
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")

@@ -55,7 +55,9 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uploadOk(w, hexId, handler.Filename, "2.5")
+	var footprint float64 = (7 / 365000) * (float64(handler.Size))
+
+	uploadOk(w, hexId, handler.Filename, footprint)
 
 }
 
