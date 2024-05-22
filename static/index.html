@@ -16,22 +16,31 @@
           <img src="./logo.png" alt="Company logo" class="w-12 h-12 mr-4" />
           <h1 class="text-2xl font-bold">AlpSync</h1>
         </div>
-        <!<a href="download.html" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Learn more...</a>>
+        <a href="info.html" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Learn more...</a>
       </div>
       <hr class="my-4" />
       <form action="/api/upload" method="post" enctype="multipart/form-data">
         <div class="mb-4">
-          <label class="block text-sm font-medium mb-2" for="file">Select a file:</label>
+          <label class="block text-sm font-medium mb-2 mt-4" for="file">Select a file:</label>
           <input class="block w-full text-sm text-slate-500
-      file:mr-4 file:py-2 file:px-4
-      file:rounded-full file:border-0
-      file:text-sm file:font-semibold
-      file:bg-blue-50 file:text-blue-700
-      hover:file:bg-violet-100" type="file" id="file" name="file">
-        </div>
-        <div class="flex flex-col items-center justify-center">
-        <button type="submit" class="w-full px-4 py-2 mt-7 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Upload</button>
-        <label class="mt-6 block text-base/6">By using AlpSync, you agree to the Terms and Conditions.</label>
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-blue-50 file:text-blue-700
+            hover:file:bg-violet-100" type="file" id="file" name="file">
+          </div>
+          <label class="block text-sm font-medium mt-4 mb-2" for="file">Expires in:</label>
+          <div class="flex items-center mb-4">
+            <input type="radio" id="option1" name="options" value="option1" class="form-radio text-blue-500 h-5 w-5">
+            <label for="option1" class="ml-2 text-gray-700">1 day</label>
+          </div>
+          <div class="flex items-center mb-4">
+            <input type="radio" id="option2" name="options" value="option2" class="form-radio text-blue-500 h-5 w-5">
+            <label for="option2" class="ml-2 text-gray-700">14 days</label>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+          <button type="submit" class="w-full px-4 py-2 mt-7 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Upload</button>
+          <label class="mt-6 block text-base/6">By using AlpSync, you agree to the Terms and Conditions.</label>
         </div>
       </form>
     </div>
