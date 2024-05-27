@@ -40,12 +40,13 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	//check for option
-	expiresAt := handler.Header.Get("expiresIn")
+	expiresIn := handler.Header.Get("expiresIn")
+	fmt.Printf("expiresIn:\"%s\n\"", expiresIn)
 	expires := 1
 
-	if expiresAt == "1d" {
+	if expiresIn == "1d" {
 		expires = 1
-	} else if expiresAt == "14d" {
+	} else if expiresIn == "14d" {
 		expires = 14
 	} else {
 		uploadErr(w, "Illegal request.")
