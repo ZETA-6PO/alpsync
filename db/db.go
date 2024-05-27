@@ -2,14 +2,18 @@ package db
 
 import (
 	"alpsync-api/models"
-	"github.com/kamva/mgm/v3"
+	"errors"
 	"time"
+
+	"github.com/kamva/mgm/v3"
 )
 
 // Add file-entry to the database and return the id of the file. Return null,err in case of an error.
-func AddFileEntry(name string, expireAt string) (string, error) {
+// ExpiresIn 0: 1d; 1: 14d
+func AddFileEntry(name string, expiresIn int) (string, error) {
+	expiryDate := time.Now().AddDate(0, 0, expiresIn)
 	//creer une entree dans la base de donne
-	dbentry := models.NewASFile(name, time.Now().Format(time.UnixDate))
+	dbentry := models.NewASFile(name, expiryDate.Format(time.UnixDate))
 	coll := mgm.CollectionByName("files")
 	err := coll.Create(dbentry)
 	if err != nil {
@@ -26,6 +30,13 @@ func GetFileEntry(id string) (string, error) {
 	err := coll.FindByID(id, dbentry)
 	if err != nil {
 		return "", err
+	}
+	expiresAt, err := time.Parse(time.UnixDate, dbentry.ExpiresAt)
+	if err != nil {
+		return "", err
+	}
+	if time.Now().After(expiresAt) {
+		return "", errors.New("This link has expired.")
 	}
 	return dbentry.Name, nil
 
