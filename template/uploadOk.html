@@ -8,6 +8,39 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 
+
+<style>
+    #copyButton svg {
+        color: white;
+    }
+</style>
+
+
+<script>
+document.getElementById("copyButton").addEventListener("click", function() {
+    // Récupérer le texte à copier
+    var texteACopier = document.getElementById("inputText").value;
+
+    // Créer un élément textarea temporaire pour copier le texte
+    var tempTextarea = document.createElement("textarea");
+    tempTextarea.value = texteACopier;
+    document.body.appendChild(tempTextarea);
+
+    // Sélectionner le texte dans l'élément textarea
+    tempTextarea.select();
+    tempTextarea.setSelectionRange(0, 99999); // Pour les navigateurs mobiles
+
+    // Copier le texte dans le presse-papiers
+    document.execCommand("copy");
+
+    // Supprimer l'élément textarea temporaire
+    document.body.removeChild(tempTextarea);
+
+    // Mettre à jour le texte du bouton après la copie
+    this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M14.293 7.293a1 1 0 1 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 1.414-1.414L10 11.586l4.293-4.293z"/></svg> Copié !';
+});
+</script>
+
 <body class="bg-028090 text-02c39a" style="background-image: url(https://picsum.photos/1920/1080); background-size: cover;">
   <div class="flex justify-center items-center h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg">
@@ -21,6 +54,14 @@
       <hr class="my-4" />
       <div>Your file {{.FileName}} has been successfully uploaded.</div>
       <div>Your file will remain accessible for 14 days before being deleted.</div>
+      <div class="flex items-center border border-gray-300 rounded-lg p-2">
+        <input id="inputText" type="text" class="flex-grow border-none focus:outline-none" value="https://alpsync.pro/f/{{.FileId}}">
+          <button id="copyButton" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M14.293 7.293a1 1 0 1 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 1.414-1.414L10 11.586l4.293-4.293z"/>
+              </svg>
+          </button>
+      </div>
       <div>Please note your file url : https://alpsync.pro/f/{{.FileId}} in order to retrieve it.</div>
       <div>Your carbon footprint is {{.FootPrint}}g for 14 days of storage.</div>
     </div>
