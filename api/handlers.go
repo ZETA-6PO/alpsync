@@ -39,10 +39,23 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
+	//check for option
+	expiresAt := handler.Header.Get("expiresAt")
+	expires := 1
+
+	if expiresAt == "1d" {
+		expires = 1
+	} else if expiresAt == "14d" {
+		expires = 14
+	} else {
+		uploadErr(w, "Illegal request.")
+		return
+	}
+
 	// create a db entry for that file
-	hexId, err := db.AddFileEntry(handler.Filename, handler.Header.Get("expiresAt"))
+	hexId, err := db.AddFileEntry(handler.Filename, expires)
 	if err != nil {
-		fmt.Println("Error db : ", err.Error())
+		fmt.Println("Error : ", err.Error())
 		uploadErr(w, err.Error())
 		return
 	}
