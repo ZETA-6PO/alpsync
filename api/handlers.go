@@ -40,7 +40,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	//check for option
-	expiresIn := handler.Header.Get("expiresIn")
+	expiresIn := r.Form.Get("expiresIn")
 	fmt.Printf("expiresIn:\"%s\n\"", expiresIn)
 	expires := 1
 
