@@ -17,14 +17,15 @@
 
 
 <script>
-document.getElementById("copyButton").addEventListener("click", function() {
-  navigator.clipboard.writeText("https://alpsync.pro/f/{{.FileId}}")
-  .then(() => {
-    console.log("Texte copié dans le presse-papiers !");
-  })
-  .catch(err => {
-    console.error("Erreur lors de la copie dans le presse-papiers :", err);
-  });
+document.getElementById('copyButton').addEventListener('click', function() {
+    // Créer un élément textarea temporaire
+    var textarea = document.getElementById("inputText");
+    // Sélectionner le texte dans l'élément textarea
+    textarea.select();
+    // Exécuter la commande de copie
+    document.execCommand('copy');
+
+    alert("Text copied !");
 });
 </script>
 
@@ -40,8 +41,8 @@ document.getElementById("copyButton").addEventListener("click", function() {
       </div>
       <hr class="my-4" />
       <div>Your file {{.FileName}} has been successfully uploaded.</div>
-      <div>Your file will remain accessible for 14 days before being deleted.</div>
-      <div>Your carbon footprint is {{.FootPrint}}g for 14 days of storage.</div>
+      <div>Your file will remain accessible for {{.Duration}} days before being deleted.</div>
+      <div>Your carbon footprint is {{.FootPrint}}g for {{.Duration}} days of storage.</div>
       <div>Here is your link :</div>
       <div class="flex items-center border border-gray-300 rounded-lg p-2">
         <input id="inputText" type="text" class="flex-grow border-none focus:outline-none" value="https://alpsync.pro/f/{{.FileId}}">

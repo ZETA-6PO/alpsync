@@ -11,6 +11,7 @@ type DataUploadOk struct {
 	FileName  string
 	FileId    string
 	FootPrint string
+	Duration  string
 }
 
 type DataUploadErr struct {
@@ -26,7 +27,7 @@ type DataDownloadOk struct {
 	FileId   string
 }
 
-func uploadOk(w http.ResponseWriter, fileID string, filename string, footprint float64) {
+func uploadOk(w http.ResponseWriter, fileID string, filename string, footprint float64, duration int) {
 
 	footprintStr := fmt.Sprintf("%.2f", footprint)
 
@@ -35,6 +36,7 @@ func uploadOk(w http.ResponseWriter, fileID string, filename string, footprint f
 		FileId:    fileID,
 		FileName:  filename,
 		FootPrint: footprintStr,
+		Duration:  fmt.Sprintf("%d", duration),
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
