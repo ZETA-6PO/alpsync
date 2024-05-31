@@ -17,7 +17,7 @@
 
 
 <script>
-document.getElementById('copyButton').addEventListener('click', function() {
+ccopy() {
     // Créer un élément textarea temporaire
     var textarea = document.getElementById("inputText");
     // Sélectionner le texte dans l'élément textarea
@@ -26,7 +26,7 @@ document.getElementById('copyButton').addEventListener('click', function() {
     document.execCommand('copy');
 
     alert("Text copied !");
-});
+}
 </script>
 
 <body class="bg-028090 text-02c39a" style="background-image: url(https://picsum.photos/1920/1080); background-size: cover;">
@@ -46,7 +46,7 @@ document.getElementById('copyButton').addEventListener('click', function() {
       <div>Here is your link :</div>
       <div class="flex items-center border border-gray-300 rounded-lg p-2">
         <input id="inputText" type="text" class="flex-grow border-none focus:outline-none" value="https://alpsync.pro/f/{{.FileId}}">
-          <button id="copyButton" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">Copy</button>
+          <button id="copyButton" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadoweoutline" onClick="ccopy()">Copy</button>
       </div>
     </div>
   </div>
