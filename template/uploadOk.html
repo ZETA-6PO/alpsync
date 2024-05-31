@@ -42,7 +42,7 @@ function ccopy() {
       <hr class="my-4" />
       <div>Your file {{.FileName}} has been successfully uploaded.</div>
       <div>Your file will remain accessible for {{.Duration}} days before being deleted.</div>
-      <div>Your carbon footprint is {{.FootPrint}}g for {{.Duration}} days of storage.</div>
+      <div class="mb-2">Your carbon footprint is {{.FootPrint}}g for {{.Duration}} days of storage.</div>
       <div>Here is your link :</div>
       <div class="flex items-center border border-gray-300 rounded-lg p-2">
         <input id="inputText" type="text" class="flex-grow border-none focus:outline-none" value="https://alpsync.pro/f/{{.FileId}}">
